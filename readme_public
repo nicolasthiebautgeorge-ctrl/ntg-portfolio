@@ -1,0 +1,132 @@
+# Nicolas Thiebaut-George — AI Product Builder
+
+J'aide les startups, PME et equipes produit a prototyper vite, construire des outils IA utiles,
+et lancer des apps mobiles orientees usage reel. Apres 7+ ans de delivery B2B dans des environnements
+exigeants (dont 4 ans pour Google France via The UX Agency), j'ai bascule dans le product engineering
+pour transformer des besoins metier en produits fonctionnels rapidement.
+
+## Preuves d'execution
+
+- 2 produits mobiles concus et livres end-to-end, de l'UX au shipping
+- 18+ ecrans concus et implementes (navigation, etats, responsive)
+- 13+ modules IA structures avec sorties JSON validees via Zod
+- 100% des sorties IA typees et validees — zero parsing ambigu
+- 4 integrations API reelles : Google Drive, Microsoft Graph, public employment data, Jina AI
+- 0 EUR d'infrastructure — architecture local-first, resiliente, RGPD-friendly
+
+## Projets phares
+
+### 1) Tickount — Expense app local-first avec extraction IA et sync multi-cloud
+
+**Probleme** : Les notes de frais terrain sont penibles, fragmentees et peu fiables. Les professionnels
+perdent du temps a saisir manuellement des montants, dates et TVA depuis des tickets papier.
+
+**Solution** : Une app mobile qui scanne un justificatif, extrait les donnees utiles via IA, et les
+synchronise automatiquement vers Google Drive et OneDrive — meme en zone sans reseau.
+
+**Ce que j'ai construit** :
+- OCR via Gemini (montant, TVA, marchand, devise, detection d'abonnements)
+- Sync multi-cloud parallele avec retry, detection de token zombie, restriction WiFi
+- Export XLSX (note de frais) et FEC (format comptable officiel francais)
+- Mode Voyage (devises etrangeres + categories)
+- IBAN extraction par photo
+- Preview editable avant sauvegarde, corbeille avec soft-delete et restauration
+
+**Choix techniques** :
+- Architecture offline-first : la photo est toujours sauvegardee, l'OCR retente automatiquement
+  au retour d'internet
+- SyncService centralise avec Promise.allSettled pour isoler les echecs par provider
+- Zustand + migrations pour la persistance (v9)
+- Zero backend, zero compte utilisateur
+
+Stack : React Native, Expo, TypeScript, Gemini 2.0 Flash, Google Drive API v3, Microsoft Graph API
+
+### 2) Candidator-RH3000 — AI job intelligence assistant
+
+**Probleme** : Un candidat passe des heures par candidature sans savoir s'il matche reellement.
+Il envoie des lettres generiques, ne decode pas le jargon RH, et n'a aucun feedback constructif
+avant le refus.
+
+**Solution** : Une app mobile qui croise le CV du candidat avec chaque offre pour produire une
+strategie actionnable : score de compatibilite, analyse des red flags, generation de contenus cibles,
+et simulation d'entretien vocal.
+
+**Ce que j'ai construit** :
+- Import CV par photo/PDF (OCR structuree en JSON)
+- Decodeur d'offres (red flags, besoins implicites, signaux faibles)
+- Score de match 0-100 avec plan d'action personnalise
+- Generateur de lettres, cold emails et pitchs calibres sur le contexte de l'offre
+- Simulation d'entretien vocal (STT + TTS, l'IA joue le recruteur)
+- Radar de masse (50 offres via public employment API + pre-filtre local Swarm Filter)
+- Boussole de carriere (3 voies generees par IA a partir du CV et des envies)
+- Market intelligence search (recherche web + extraction d'entreprises + CRM local)
+- 3 personas adaptatifs qui changent le ton de toute l'app
+
+**Choix techniques** :
+- Pipeline cost-aware : scoring lexical gratuit sur device elimine 60-80% des offres avant appel IA
+- Un seul modele (Gemini 2.5 Flash) pour tout : OCR, analyse, STT, coaching
+- Sortie JSON stricte sur 13 modules — validation Zod sur 100% des reponses
+- Architecture local-first, zero backend, zero donnees transmises sauf en transit API
+- Prompt engineering avance : 1200+ lignes de prompts structures
+
+Stack : React Native, Expo, TypeScript, Gemini 2.5 Flash, Zod, public employment API, Jina AI
+
+## Background corporate
+
+7+ ans dans des environnements B2B exigeants, avec pilotage de projets et coordination d'operations
+pour des comptes a forte visibilite. Cette experience m'apporte une discipline d'execution, une
+comprehension du besoin metier, et une capacite a livrer proprement sous contrainte.
+
+- The UX Agency (4 ans) : pilotage de programmes marketing et activation retail pour Google France.
+  Gestion de budgets, coordination de dizaines de prestataires, execution avec un niveau d'exigence
+  international.
+- Partenaires de deploiement : Orange, Fnac, Boulanger.
+- Ce background me distingue des profils purement techniques : je sais parler business, comprendre
+  les contraintes client, et livrer.
+
+## Competences activables
+
+- **Mobile product building** : React Native 0.81, Expo SDK 54, TypeScript Strict, Expo Router, EAS Build
+- **AI integration** : Gemini 2.0/2.5 Flash, structured outputs, Zod validation, multimodal, prompt engineering
+- **Data & state** : Zustand, AsyncStorage, local-first patterns, offline-first sync
+- **Business integrations** : Google Drive API v3, Microsoft Graph API, public employment API (OAuth2), Jina AI
+- **Product reliability** : 100% typed outputs, export XLSX/FEC/PDF/CSV, retry with backoff, sanitization
+- **UX & design system** : accent-driven HSL theming, responsive, certification Google UX Design
+
+## Engineering philosophy
+
+My rule: AI outputs must always be typed and validated.
+AI hallucinations break production systems. Structured outputs with schema validation ensure
+reliability at every layer.
+
+- **Why local-first** : Zero backend = zero infra cost, zero GDPR risk, zero downtime. The user's
+  data never leaves the device except during API transit. Offline-first means the app works in the
+  metro, on a plane, in a warehouse.
+- **Why one model for everything** : Gemini 2.5 Flash handles OCR, analysis, STT, coaching, and
+  scoring. One model = one billing, one latency profile, one prompt format. No cascading model failures.
+- **Why Zod on every output** : Every AI response is validated against a typed schema before reaching
+  the UI. If the model hallucinates or returns malformed data, the app catches it at the boundary —
+  not in the user's face.
+- **Why pre-filter before AI** : The Swarm Filter scores offers locally (lexical matching, zero cost)
+  before sending the top candidates to Gemini. This cuts API calls by 60-80% and keeps the per-search
+  cost under $0.05.
+
+## Disponibilite
+
+- Mission freelance (prototype, MVP, feature IA, app mobile)
+- Role Product Builder / Mobile + AI
+- Base en France — ciblant collaborations suisses et europeennes
+
+## Liens
+
+- LinkedIn : [a completer]
+- GitHub (showcase) : [a completer]
+- Demo video Tickount : [a completer]
+- Demo video Candidator-RH3000 : [a completer]
+- One-pager portfolio : `doc/pitch deck/portfolio-one-pager.html`
+- Pitch Deck produit : `doc/pitch deck/deck-v2.html`
+
+## Contact
+
+Je recherche des collaborations avec startups, agences produit ou PME tech ayant besoin d'un builder
+capable de cadrer, designer et shipper rapidement. Parlons-en.

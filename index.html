@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio — Nicolas Thiebaut-George | AI Product Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface-alt: #11161d;
+      --green: #39d353;
+      --green-soft: rgba(57, 211, 83, 0.12);
+      --green-glow: rgba(57, 211, 83, 0.28);
+      --green-line: rgba(57, 211, 83, 0.2);
+      --orange: #ed8936;
+      --orange-soft: rgba(237, 137, 54, 0.12);
+      --blue: #58a6ff;
+      --blue-soft: rgba(88, 166, 255, 0.12);
+      --blue-line: rgba(88, 166, 255, 0.25);
+      --red: #f85149;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--bg);
+      color: var(--green);
+      font-family: "JetBrains Mono", monospace;
+      scroll-behavior: smooth;
+    }
+
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(57, 211, 83, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(57, 211, 83, 0.035) 1px, transparent 1px);
+      background-size: 42px 42px;
+      z-index: 0;
+    }
+
+    body::after {
+      content: "";
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 1;
+      background: linear-gradient(to bottom, rgba(255,255,255,0) 50%, rgba(0,0,0,0.14) 50%);
+      background-size: 100% 4px;
+      opacity: .45;
+    }
+
+    .wrap {
+      position: relative; z-index: 2;
+      width: min(92vw, var(--max));
+      margin: 0 auto;
+      padding: 24px 0 80px;
+    }
+
+    .bar {
+      border: 1px solid var(--green-line);
+      background: var(--surface-alt);
+      color: var(--muted);
+      padding: 10px 14px;
+      font-size: .78rem;
+      letter-spacing: .03em;
+    }
+
+    section {
+      margin-top: 18px;
+      border: 1px solid var(--green-line);
+      background: linear-gradient(180deg, rgba(22,27,34,.96), rgba(13,17,23,.97));
+      padding: clamp(16px, 4vw, 36px);
+      position: relative; overflow: hidden;
+    }
+
+    section h2 {
+      margin: 0 0 14px;
+      font-size: clamp(1.3rem, 2.6vw, 2.2rem);
+      text-transform: uppercase;
+      line-height: 1.15;
+      text-shadow: 0 0 16px var(--green-glow);
+    }
+
+    p, li { color: var(--muted); line-height: 1.6; font-size: .92rem; }
+    .hl { background: var(--green); color: var(--bg); padding: 0 7px; text-shadow: none; }
+    .hl-blue { background: var(--blue); color: var(--bg); padding: 0 7px; text-shadow: none; }
+    .hl-orange { background: var(--orange); color: var(--bg); padding: 0 7px; text-shadow: none; }
+
+    /* Hero */
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 6vw, 4.2rem);
+      line-height: 1.05;
+      text-transform: uppercase;
+      text-shadow: 0 0 22px var(--green-glow);
+    }
+
+    .hero .promise {
+      max-width: 68ch;
+      font-size: clamp(.88rem, 1.6vw, 1.1rem);
+      margin-top: 14px;
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .hero .promise strong { color: var(--green); font-weight: 700; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .chip {
+      border: 1px solid var(--green-line);
+      background: var(--green-soft);
+      color: var(--green);
+      padding: 5px 10px;
+      font-size: .74rem;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      margin-top: 14px;
+    }
+
+    .kpi {
+      border: 1px solid var(--green-line);
+      background: var(--surface);
+      padding: 14px;
+    }
+
+    .kpi .val {
+      font-size: clamp(1.3rem, 3.5vw, 2rem);
+      color: var(--green);
+      font-weight: 800;
+      line-height: 1;
+      text-shadow: 0 0 12px var(--green-glow);
+    }
+
+    .kpi .lbl {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: .82rem;
+      line-height: 1.35;
+    }
+
+    /* Project Cards */
+    .project-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+      margin-top: 14px;
+    }
+
+    .proj {
+      border: 1px solid var(--green-line);
+      background: var(--surface);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .proj h3 {
+      margin: 0;
+      color: var(--text);
+      font-size: 1.15rem;
+      text-transform: uppercase;
+    }
+
+    .proj .sub { color: var(--green); font-size: .86rem; margin: 0; line-height: 1.4; }
+    .proj .sub.blue { color: var(--blue); }
+
+    .proj .block-label {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .proj .problem .block-label { color: var(--red); }
+    .proj .solution .block-label { color: var(--green); }
+    .proj .built .block-label { color: var(--blue); }
+    .proj .choices .block-label { color: var(--orange); }
+
+    .proj .block-text {
+      margin: 0;
+      font-size: .84rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .proj .demo-links {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: auto;
+      padding-top: 8px;
+      border-top: 1px solid var(--green-line);
+    }
+
+    .proj .demo-links a {
+      text-decoration: none;
+      font-size: .76rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      border: 1px solid var(--green-line);
+      color: var(--green);
+      background: var(--green-soft);
+    }
+
+    .proj .demo-links a.blue-link {
+      border-color: var(--blue-line);
+      color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    /* Corporate */
+    .corp-block {
+      border-left: 3px solid var(--green);
+      padding: 6px 0 6px 14px;
+      margin-top: 8px;
+    }
+
+    .corp-block + .corp-block { margin-top: 12px; }
+    .corp-block b { color: var(--text); font-size: .92rem; }
+    .corp-block p { margin: 4px 0 0; font-size: .86rem; }
+
+    /* Capabilities */
+    .cap-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+      margin-top: 12px;
+    }
+
+    .cap {
+      border: 1px solid var(--blue-line);
+      background: rgba(88,166,255,.05);
+      padding: 14px;
+    }
+
+    .cap .cap-title {
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 6px;
+    }
+
+    .cap .cap-items {
+      font-size: .82rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    /* CTA */
+    .cta { text-align: center; }
+    .cta .offer {
+      color: var(--text);
+      font-size: clamp(.88rem, 1.6vw, 1.05rem);
+      max-width: 60ch;
+      margin: 10px auto 0;
+      line-height: 1.55;
+    }
+
+    .cta .avail {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .cta .avail .tag {
+      border: 1px solid var(--green-line);
+      background: var(--green-soft);
+      color: var(--green);
+      padding: 5px 10px;
+      font-size: .76rem;
+      letter-spacing: .03em;
+    }
+
+    .cta .avail .tag.geo {
+      border-color: rgba(237,137,54,.3);
+      background: var(--orange-soft);
+      color: var(--orange);
+    }
+
+    .cta .btns {
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      text-decoration: none;
+      color: var(--green);
+      border: 2px solid var(--green);
+      background: var(--green-soft);
+      padding: 10px 18px;
+      font-size: .84rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      font-family: "JetBrains Mono", monospace;
+      text-shadow: 0 0 8px var(--green-glow);
+      box-shadow: 0 0 16px var(--green-soft);
+    }
+
+    .btn.alt {
+      color: var(--orange);
+      border-color: var(--orange);
+      background: var(--orange-soft);
+      text-shadow: none;
+      box-shadow: none;
+    }
+
+    @media (max-width: 600px) {
+      .kpi-grid { grid-template-columns: 1fr 1fr; }
+      .project-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="bar">> portfolio.init :: nicolas-thiebaut-george :: 2026</div>
+
+    <!-- ================================================
+         HERO — Mission-oriented promise
+         ================================================ -->
+    <section class="hero">
+      <h1>Nicolas<br>Thiebaut-George</h1>
+      <p class="promise">
+        J'aide les startups, PME et equipes produit a <strong>prototyper vite, construire des outils IA utiles,
+        et lancer des apps mobiles orientees usage reel</strong>. Apres 7+ ans de delivery B2B dans des
+        environnements exigeants, j'ai bascule dans le product engineering pour transformer des besoins metier
+        en produits fonctionnels rapidement.
+      </p>
+      <div class="chips">
+        <span class="chip">AI Product Builder</span>
+        <span class="chip">React Native + Expo</span>
+        <span class="chip">TypeScript Strict</span>
+        <span class="chip">Gemini 2.5 Flash</span>
+        <span class="chip">Local-first Architecture</span>
+      </div>
+    </section>
+
+    <!-- ================================================
+         PROOFS — Complexity, quality, product-level signals
+         ================================================ -->
+    <section>
+      <h2>Preuves <span class="hl">d'execution</span></h2>
+      <div class="kpi-grid">
+        <article class="kpi">
+          <div class="val">2</div>
+          <div class="lbl">Produits mobiles concus et livres end-to-end, de l'UX au shipping</div>
+        </article>
+        <article class="kpi">
+          <div class="val">18+</div>
+          <div class="lbl">Ecrans concus et implementes (navigation, etats, responsive)</div>
+        </article>
+        <article class="kpi">
+          <div class="val">13+</div>
+          <div class="lbl">Modules IA structures avec sorties JSON validees (Zod)</div>
+        </article>
+        <article class="kpi">
+          <div class="val">100%</div>
+          <div class="lbl">Sorties IA typees et validees — zero parsing ambigu</div>
+        </article>
+        <article class="kpi">
+          <div class="val">4</div>
+          <div class="lbl">Integrations API reelles : Google Drive, Microsoft Graph, public employment data, Jina AI</div>
+        </article>
+        <article class="kpi">
+          <div class="val">0&euro;</div>
+          <div class="lbl">Infrastructure — architecture local-first, resiliente, RGPD-friendly</div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================================================
+         PROJECTS — Problem / Solution / Built / Tech choices / Demo
+         ================================================ -->
+    <section>
+      <h2>Projets <span class="hl">phares</span></h2>
+      <div class="project-grid">
+
+        <!-- TICKOUNT -->
+        <article class="proj">
+          <h3>Tickount</h3>
+          <p class="sub">Expense app local-first avec extraction IA et sync multi-cloud</p>
+
+          <div class="problem">
+            <div class="block-label">Probleme</div>
+            <p class="block-text">Les notes de frais terrain sont penibles, fragmentees et peu fiables. Les professionnels perdent du temps a saisir manuellement des montants, dates et TVA depuis des tickets papier.</p>
+          </div>
+
+          <div class="solution">
+            <div class="block-label">Solution</div>
+            <p class="block-text">Une app mobile qui scanne un justificatif, extrait les donnees utiles via IA, et les synchronise automatiquement vers Google Drive et OneDrive — meme en zone sans reseau.</p>
+          </div>
+
+          <div class="built">
+            <div class="block-label">Ce que j'ai construit</div>
+            <p class="block-text">OCR via Gemini (montant, TVA, marchand, devise, abonnement). Sync multi-cloud parallele avec retry, detection de token zombie, et restriction WiFi. Export XLSX (note de frais) et FEC (format comptable officiel). Mode Voyage (devises etrangeres + categories). IBAN extraction par photo. Preview editable avant sauvegarde. Corbeille avec soft-delete et restauration.</p>
+          </div>
+
+          <div class="choices">
+            <div class="block-label">Choix techniques</div>
+            <p class="block-text">Architecture offline-first : la photo est toujours sauvegardee, l'OCR retente automatiquement au retour d'internet. SyncService centralise avec Promise.allSettled pour isoler les echecs par provider. Zustand + migrations pour la persistance (v9). Zero backend, zero compte utilisateur.</p>
+          </div>
+
+          <div class="demo-links">
+            <a href="#">Demo video</a>
+            <a href="#" class="blue-link">GitHub Showcase</a>
+          </div>
+        </article>
+
+        <!-- CANDIDATOR RH 3000 -->
+        <article class="proj">
+          <h3>Candidator-RH3000</h3>
+          <p class="sub blue">AI job intelligence assistant — offer analysis, positioning, interview preparation</p>
+
+          <div class="problem">
+            <div class="block-label">Probleme</div>
+            <p class="block-text">Un candidat passe des heures par candidature sans savoir s'il matche reellement. Il envoie des lettres generiques, ne decode pas le jargon RH, et n'a aucun feedback constructif avant le refus.</p>
+          </div>
+
+          <div class="solution">
+            <div class="block-label">Solution</div>
+            <p class="block-text">Une app mobile qui croise le CV du candidat avec chaque offre pour produire une strategie actionnable : score de compatibilite, analyse des red flags, generation de contenus cibles, et simulation d'entretien vocal.</p>
+          </div>
+
+          <div class="built">
+            <div class="block-label">Ce que j'ai construit</div>
+            <p class="block-text">Import CV par photo/PDF (OCR structuree). Decodeur d'offres (red flags, besoins implicites, signaux faibles). Score de match 0-100 avec plan d'action. Generateur de lettres/emails/pitchs calibres sur le contexte de l'offre. Simulation d'entretien vocal (STT + TTS). Radar de masse (50 offres via public employment API + pre-filtre local). Boussole de carriere (3 voies generees par IA). Market intelligence search (recherche web + extraction d'entreprises + CRM local). 3 personas adaptatifs qui changent le ton de toute l'app.</p>
+          </div>
+
+          <div class="choices">
+            <div class="block-label">Choix techniques</div>
+            <p class="block-text">Pipeline cost-aware : Swarm Filter (scoring lexical gratuit sur device) elimine 60-80% des offres avant tout appel IA. Un seul modele (Gemini 2.5 Flash) pour tout : OCR, analyse, STT, coaching. Sortie JSON stricte sur 13 modules — validation Zod sur 100% des reponses. Architecture local-first, zero backend, zero donnees transmises sauf en transit API. Prompt engineering avance : 1200+ lignes de prompts structures.</p>
+          </div>
+
+          <div class="demo-links">
+            <a href="#">Demo video</a>
+            <a href="#" class="blue-link">GitHub Showcase</a>
+            <a href="#" class="blue-link">Pitch Deck</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================================================
+         CORPORATE BACKGROUND — Selling, not just reassuring
+         ================================================ -->
+    <section>
+      <h2>Background <span class="hl">corporate</span></h2>
+      <p style="color: var(--text); font-size: .92rem; margin-bottom: 10px;">
+        7+ ans dans des environnements B2B exigeants, avec pilotage de projets et coordination d'operations
+        pour des comptes a forte visibilite. Cette experience m'apporte une discipline d'execution,
+        une comprehension du besoin metier, et une capacite a livrer proprement sous contrainte.
+      </p>
+
+      <div class="corp-block">
+        <b>The UX Agency — Delivery grand compte (4 ans)</b>
+        <p>Pilotage de programmes marketing et activation retail. Gestion de budgets, coordination de dizaines de prestataires, execution avec un niveau d'exigence international.</p>
+      </div>
+
+      <div class="corp-block">
+        <b>Client principal : Google France</b>
+        <p>Deploiements B2B multi-enseignes. Coordination multi-acteurs et culture du resultat dans un environnement ou le droit a l'erreur est minimal.</p>
+      </div>
+
+      <div class="corp-block">
+        <b>Partenaires de deploiement : Orange, Fnac, Boulanger</b>
+        <p>Operations terrain nationales. Ce background me distingue des profils purement techniques : je sais parler business, comprendre les contraintes client, et livrer.</p>
+      </div>
+    </section>
+
+    <!-- ================================================
+         STACK — By capabilities, not tech names
+         ================================================ -->
+    <section>
+      <h2>Competences <span class="hl-blue">activables</span></h2>
+      <div class="cap-grid">
+        <div class="cap">
+          <div class="cap-title">Mobile Product Building</div>
+          <div class="cap-items">React Native 0.81, Expo SDK 54, TypeScript Strict, Expo Router v6, EAS Build</div>
+        </div>
+        <div class="cap">
+          <div class="cap-title">AI Integration</div>
+          <div class="cap-items">Gemini 2.0/2.5 Flash, structured JSON outputs, Zod validation, multimodal (text + image + audio), prompt engineering avance</div>
+        </div>
+        <div class="cap">
+          <div class="cap-title">Data & State</div>
+          <div class="cap-items">Zustand, AsyncStorage, local-first patterns, offline-first sync, cache module-level</div>
+        </div>
+        <div class="cap">
+          <div class="cap-title">Business Integrations</div>
+          <div class="cap-items">Google Drive API v3, Microsoft Graph API (OneDrive), public employment API (OAuth2), Jina AI Reader/Search</div>
+        </div>
+        <div class="cap">
+          <div class="cap-title">Product Reliability</div>
+          <div class="cap-items">100% typed outputs, export XLSX/FEC/PDF/CSV, retry with backoff, zombie token detection, sanitization anti-injection</div>
+        </div>
+        <div class="cap">
+          <div class="cap-title">UX & Design System</div>
+          <div class="cap-items">Design system HSL accent-driven, 5 presets + light mode, responsive edge-to-edge, certification Google UX Design</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================
+         ENGINEERING PHILOSOPHY + DECISIONS
+         ================================================ -->
+    <section>
+      <h2>Engineering <span class="hl-orange">philosophy</span></h2>
+      <p style="color: var(--text); font-size: .94rem; margin-bottom: 14px; border-left: 3px solid var(--orange); padding-left: 14px;">
+        My rule: AI outputs must always be typed and validated. AI hallucinations break production systems.
+        Structured outputs with schema validation ensure reliability at every layer.
+      </p>
+
+      <div class="cap-grid">
+        <div class="cap" style="border-color: rgba(237,137,54,.25); background: rgba(237,137,54,.05);">
+          <div class="cap-title" style="color: var(--orange);">Why local-first</div>
+          <div class="cap-items">Zero backend = zero infra cost, zero GDPR risk, zero downtime. The user's data never leaves the device except during API transit. Offline-first means the app works in the metro, on a plane, in a warehouse.</div>
+        </div>
+        <div class="cap" style="border-color: rgba(237,137,54,.25); background: rgba(237,137,54,.05);">
+          <div class="cap-title" style="color: var(--orange);">Why one model for everything</div>
+          <div class="cap-items">Gemini 2.5 Flash handles OCR, analysis, STT, coaching, and scoring. One model = one billing, one latency profile, one prompt format. No cascading model failures.</div>
+        </div>
+        <div class="cap" style="border-color: rgba(237,137,54,.25); background: rgba(237,137,54,.05);">
+          <div class="cap-title" style="color: var(--orange);">Why Zod on every output</div>
+          <div class="cap-items">Every AI response is validated against a typed schema before reaching the UI. If the model hallucinates or returns malformed data, the app catches it at the boundary — not in the user's face.</div>
+        </div>
+        <div class="cap" style="border-color: rgba(237,137,54,.25); background: rgba(237,137,54,.05);">
+          <div class="cap-title" style="color: var(--orange);">Why pre-filter before AI</div>
+          <div class="cap-items">The Swarm Filter scores offers locally (lexical matching, zero cost) before sending the top candidates to Gemini. This cuts API calls by 60-80% and keeps the per-search cost under $0.05.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================
+         CTA — Targeted conversion
+         ================================================ -->
+    <section class="cta">
+      <h2>Construisons <span class="hl">ensemble</span></h2>
+      <p class="offer">
+        Je recherche des collaborations avec startups, agences produit ou PME tech
+        ayant besoin d'un builder capable de cadrer, designer et shipper rapidement.
+      </p>
+
+      <div class="avail">
+        <span class="tag">Mission freelance (prototype, MVP, feature IA)</span>
+        <span class="tag">Role Product Builder / Mobile + AI</span>
+        <span class="tag geo">Base en France — ciblant collaborations suisses & europeennes</span>
+      </div>
+
+      <div class="btns">
+        <a class="btn" href="#">LinkedIn</a>
+        <a class="btn alt" href="#">GitHub Showcase</a>
+        <a class="btn" href="#">Contact</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
